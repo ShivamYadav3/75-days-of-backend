@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon ./index.js",
-    "dev":"nodemon ./2.index.js",
+    "start":"nodemon ./todoExpress.js",
+    "dev":"nodemon ./todoFastify.js",
     "performance": "npx autocannon -c 4 -d 10 localhost:7001"
   },
   "keywords": [],
