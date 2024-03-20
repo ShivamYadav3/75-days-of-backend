@@ -1,12 +1,17 @@
 const http = require("node:http");
 const hostname = "localhost"; // loopback ip or localhost
 const port = 8000; // OS - 65500
-const url = require("url");
+const URL = require("node:url");
 const { data } = require("./data");
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  const q = url.parse(req.url, true).query;
+
+  const { url } = req;
+  const parsedURL = URL.parse(url, true);
+  const { pathname, query } = parsedURL;
+
+  console.log("parsedURL: ", parsedURL);
   // console.log(req.url, q);
   res.setHeader("Content-Type", "application/json");
   // const payload = {
@@ -14,14 +19,16 @@ const server = http.createServer((req, res) => {
   //   city: "jabalpur",
   //   Lname: "yadav",
   // };
-  if (req.url == "/greetings") {
-    res.end("hello there");
-  } else if (req.url == "/products") {
-    res.end(JSON.stringify(data));
-  } else if (q.name) {
-    res.end(`hello ${q.name}`);
-  } else {
+  if (pathname === "/") {
+    // Root URL requested
     res.end("Welcome to Card book");
+  } else if (pathname === "/greetings") {
+    const message = `Hello ${query.name ? query.name : "there"}`;
+    res.end(message);
+  } else if (pathname === "/products") {
+    res.end(JSON.stringify(data));
+  } else {
+    res.end("Unknown request");
   }
 });
 
