@@ -2,6 +2,7 @@ import {
   addToDoMessage,
   deleteToDoMessage,
   editToDoMessage,
+  getToDoDetailsMessage,
   getToDoMessage,
   noToDoFoundMessage,
 } from "../../../constant/messages/todosMessages.js";
@@ -39,7 +40,7 @@ export const getToDoDetails = (req, res) => {
   try {
     const { id } = req.params;
     const todo = todos.find((todo) => todo.id === id);
-    const response = createResponse(todo, getToDoDetails);
+    const response = createResponse(todo, getToDoDetailsMessage);
     return res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -49,7 +50,8 @@ export const getToDoDetails = (req, res) => {
 export const deleteTodo = (req, res) => {
   try {
     const { id } = req.params;
-    todos = todos.filter((todo) => todo.id !== id);
+    const todoIndex = todos.findIndex((todo) => todo.id === id);
+    todos.splice(todoIndex, 1);
     const response = createResponse(null, deleteToDoMessage);
     res.status(200).json(response);
   } catch (error) {
