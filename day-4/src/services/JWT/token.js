@@ -10,5 +10,11 @@ export const generateToken = (profile) => {
 };
 
 export const verifyToken = (authorization) => {
-  return jwt.verify(authorization, jwtPassword);
+  try {
+    const verified = jwt.verify(authorization, jwtPassword);
+    return verified;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };
