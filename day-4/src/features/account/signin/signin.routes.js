@@ -1,6 +1,7 @@
 import { router } from "../../../../server.js";
+import { signInValidator } from "./sign.validator.js";
 import { signInUser } from "./signin.controller.js";
 
-router.get("/", signInUser);
+router.post("/", signInValidator, signInUser);
 
 export default router;

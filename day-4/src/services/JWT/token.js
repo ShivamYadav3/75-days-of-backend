@@ -4,7 +4,7 @@ dotenv.config();
 
 const jwtPassword = process.env.jwtPassword;
 
-export const generateToken = () => {
+export const generateToken = (profile) => {
   const token = jwt.sign({ id: profile.id }, jwtPassword);
   return token;
 };
