@@ -1,4 +1,4 @@
-import { verifyToken } from "../../services/JWT/token.js";
+import { verifyToken } from "../../../services/JWT/token.js";
 
 export const getUserDetails = (req, res) => {
   const { authorization } = req.headers;

@@ -1,4 +1,4 @@
-import { router } from "../../../server.js";
+import { router } from "../../../../server.js";
 import { getUserDetails } from "./profile.controller.js";
 
 router.get("/", getUserDetails);

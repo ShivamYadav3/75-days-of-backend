@@ -1,4 +1,4 @@
-import { router } from "../../../server.js";
+import { router } from "../../../../server.js";
 import { signInUser } from "./signin.controller.js";
 
 router.get("/", signInUser);

@@ -1,5 +1,5 @@
-import { profile } from "../../../constant/users/data.js";
-import { generateToken } from "../../services/JWT/token.js";
+import { profile } from "../../../../constant/users/data.js";
+import { generateToken } from "../../../services/JWT/token.js";
 
 export const signInUser = (req, res) => {
   const { email, password } = req.body;
