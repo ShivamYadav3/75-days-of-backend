@@ -106,3 +106,70 @@ db.tasks.aggregate([
     },
   },
 ]);
+
+import { ISearchUserQuery } from "@api/sys-users/types";
+
+export const GetAccountDetailsAggregation = (searchQuery: ISearchUserQuery) => {
+  const agg = [
+    { $match: searchQuery },
+    {
+      $lookup: {
+        from: "businessaccounts",
+        let: { sysId: "$employees.sysId" },
+        pipeline: [
+          { $match: { $expr: { $eq: ["$userSysId", "$$sysId"] } } },
+          { $match: { $expr: { $eq: ["$isActive", true] } } },
+          { $match: { $expr: { $eq: ["$STATUS", true] } } },
+        ],
+        as: "BusinessAccounts",
+      },
+    },
+    {
+      $lookup: {
+        from: "businessaccounts",
+        let: { sysId: "$employees.sysId" },
+        pipeline: [
+          { $match: { $expr: { $eq: ["$employees.sysId", "$$sysId"] } } },
+          { $match: { $expr: { $eq: ["$employees.isActive", true] } } },
+        ],
+        as: "BusinessEmployees",
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        BusinessEmployees: "$BusinessEmployees",
+        userName: "$name",
+        contactNumber: "$contactNumber",
+        businessAccounts: {
+          $map: {
+            input: "$business",
+            as: "item",
+            in: {
+              sysId: "$$item.sysId",
+              name: "$$item.name",
+              category: "$$item.category",
+              subCategory: "$$item.subCategory",
+              employeesCount: {
+                $size: {
+                  input: {
+                    $filter: {
+                      input: "$$item.employees",
+                      as: "elem",
+                      cond: "$$elem.isActive",
+                    },
+                  },
+                  as: "element",
+                  in: {
+                    sysId: "$$element.sysId",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  ];
+  return agg;
+};
